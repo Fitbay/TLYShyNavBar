@@ -38,7 +38,7 @@ static inline CGFloat AACStatusBarHeight()
 @property (nonatomic, strong) TLYShyViewController *navBarController;
 @property (nonatomic, strong) TLYShyViewController *extensionController;
 
-@property (nonatomic, strong) TLYDelegateProxy *delegateProxy;
+//@property (nonatomic, strong) TLYDelegateProxy *delegateProxy;
 
 @property (nonatomic, strong) UIView *extensionViewContainer;
 
@@ -64,7 +64,7 @@ static inline CGFloat AACStatusBarHeight()
     self = [super init];
     if (self)
     {
-        self.delegateProxy = [[TLYDelegateProxy alloc] initWithMiddleMan:self];
+        //        self.delegateProxy = [[TLYDelegateProxy alloc] initWithMiddleMan:self];
         
         self.contracting = NO;
         self.previousContractionState = YES;
@@ -119,10 +119,10 @@ static inline CGFloat AACStatusBarHeight()
 - (void)dealloc
 {
     // sanity check
-    if (_scrollView.delegate == _delegateProxy)
-    {
-        _scrollView.delegate = _delegateProxy.originalDelegate;
-    }
+    //    if (_scrollView.delegate == _delegateProxy)
+    //    {
+    //        _scrollView.delegate = _delegateProxy.originalDelegate;
+    //    }
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -147,8 +147,25 @@ static inline CGFloat AACStatusBarHeight()
 - (void)setScrollViewProvider:(id<ScrollViewProvider>)scrollViewProvider
 {
     _scrollView = scrollViewProvider.scrollView;
+    [scrollViewProvider setScrollViewDelegate:self];
+    [self cleanup];
+    [self layoutViews];
+}
+
+- (void)setScrollView:(UIScrollView *)scrollView
+{
+    //    if (_scrollView.delegate == self.delegateProxy)
+    //    {
+    //        _scrollView.delegate = self.delegateProxy.originalDelegate;
+    //    }
     
     [scrollViewProvider setScrollViewDelegate:self];
+    
+    //    if (_scrollView.delegate != self.delegateProxy)
+    //    {
+    //        self.delegateProxy.originalDelegate = _scrollView.delegate;
+    //        _scrollView.delegate = (id)self.delegateProxy;
+    //    }
     
     [self cleanup];
     [self layoutViews];

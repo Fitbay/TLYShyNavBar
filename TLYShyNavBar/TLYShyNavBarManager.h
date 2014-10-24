@@ -23,7 +23,6 @@
 @protocol ScrollViewProvider <NSObject>
 
 @property (nonatomic, weak) id<UIScrollViewDelegate> scrollViewDelegate;
-//- (void)setScrollViewDelegate:(id<UIScrollViewDelegate>)scrollViewDelegate;
 @property (nonatomic, readonly) UIScrollView *scrollView;
 
 @end
@@ -63,7 +62,6 @@
 @property (nonatomic, strong) id<ScrollViewProvider> scrollViewProvider;
 
 @property (nonatomic, assign) BOOL accountForContentInset;
-
 @end
 
 
