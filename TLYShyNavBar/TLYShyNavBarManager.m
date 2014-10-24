@@ -38,7 +38,7 @@ static inline CGFloat AACStatusBarHeight()
 @property (nonatomic, strong) TLYShyViewController *navBarController;
 @property (nonatomic, strong) TLYShyViewController *extensionController;
 
-@property (nonatomic, strong) TLYDelegateProxy *delegateProxy;
+//@property (nonatomic, strong) TLYDelegateProxy *delegateProxy;
 
 @property (nonatomic, strong) UIView *extensionViewContainer;
 
@@ -51,6 +51,8 @@ static inline CGFloat AACStatusBarHeight()
 
 @property (nonatomic, readonly) BOOL isViewControllerVisible;
 
+@property (nonatomic, weak) UIScrollView *scrollView;
+
 @end
 
 @implementation TLYShyNavBarManager
@@ -62,7 +64,7 @@ static inline CGFloat AACStatusBarHeight()
     self = [super init];
     if (self)
     {
-        self.delegateProxy = [[TLYDelegateProxy alloc] initWithMiddleMan:self];
+        //        self.delegateProxy = [[TLYDelegateProxy alloc] initWithMiddleMan:self];
         
         self.contracting = NO;
         self.previousContractionState = YES;
@@ -117,10 +119,10 @@ static inline CGFloat AACStatusBarHeight()
 - (void)dealloc
 {
     // sanity check
-    if (_scrollView.delegate == _delegateProxy)
-    {
-        _scrollView.delegate = _delegateProxy.originalDelegate;
-    }
+    //    if (_scrollView.delegate == _delegateProxy)
+    //    {
+    //        _scrollView.delegate = _delegateProxy.originalDelegate;
+    //    }
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -142,20 +144,33 @@ static inline CGFloat AACStatusBarHeight()
     [self layoutViews];
 }
 
+- (void)setScrollViewProvider:(id<ScrollViewProvider>)scrollViewProvider
+{
+    _scrollView = scrollViewProvider.scrollView;
+    [scrollViewProvider setScrollViewDelegate:self];
+    [self cleanup];
+    [self layoutViews];
+}
+
 - (void)setScrollView:(UIScrollView *)scrollView
 {
-    if (_scrollView.delegate == self.delegateProxy)
-    {
-        _scrollView.delegate = self.delegateProxy.originalDelegate;
-    }
+    //    if (_scrollView.delegate == self.delegateProxy)
+    //    {
+    //        _scrollView.delegate = self.delegateProxy.originalDelegate;
+    //    }
     
     _scrollView = scrollView;
     
-    if (_scrollView.delegate != self.delegateProxy)
-    {
-        self.delegateProxy.originalDelegate = _scrollView.delegate;
-        _scrollView.delegate = (id)self.delegateProxy;
-    }}
+    //    if (_scrollView.delegate != self.delegateProxy)
+    //    {
+    //        self.delegateProxy.originalDelegate = _scrollView.delegate;
+    //        _scrollView.delegate = (id)self.delegateProxy;
+    //    }
+    
+    [self cleanup];
+    [self layoutViews];
+    
+}
 
 - (CGRect)extensionViewBounds
 {
@@ -189,7 +204,7 @@ static inline CGFloat AACStatusBarHeight()
     {
         // 1 - Calculate the delta
         CGFloat deltaY = (self.previousYOffset - self.scrollView.contentOffset.y);
-
+        
         // 2 - Ignore any scrollOffset beyond the bounds
         CGFloat start = -self.scrollView.contentInset.top;
         if (self.previousYOffset < start)
@@ -216,13 +231,13 @@ static inline CGFloat AACStatusBarHeight()
             self.previousContractionState = self.isContracting;
             self.resistanceConsumed = 0;
         }
-
+        
         // 5 - Apply resistance
         if (self.isContracting)
         {
             CGFloat availableResistance = self.contractionResistance - self.resistanceConsumed;
             self.resistanceConsumed = MIN(self.contractionResistance, self.resistanceConsumed - deltaY);
-
+            
             deltaY = MIN(0, availableResistance + deltaY);
         }
         else if (self.scrollView.contentOffset.y > -AACStatusBarHeight())
@@ -301,7 +316,7 @@ static inline CGFloat AACStatusBarHeight()
     
     [self.navBarController expand];
     [self.extensionViewContainer.superview bringSubviewToFront:self.extensionViewContainer];
-
+    
     self.scrollView.contentInset = scrollInsets;
     self.scrollView.scrollIndicatorInsets = scrollInsets;
 }

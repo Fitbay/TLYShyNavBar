@@ -15,10 +15,17 @@
  *  that drives the contraction/expansion, then assigned to the
  *  viewController that needs the functionality. Must be assigned
  *  throught the UIViewController category:
- *      
+ *
  *  viewController.shyNavManager = ...;
  *
  */
+
+@protocol ScrollViewProvider <NSObject>
+
+- (void)setScrollViewDelegate:(id<UIScrollViewDelegate>)scrollViewDelegate;
+@property (nonatomic, readonly) UIScrollView *scrollView;
+
+@end
 
 @interface TLYShyNavBarManager : NSObject
 
@@ -27,10 +34,10 @@
  */
 @property (nonatomic, readonly, weak) UIViewController *viewController;
 
-/* The scrollView subclass that will drive the contraction/expansion 
+/* The scrollView subclass that will drive the contraction/expansion
  * IMPORTANT: set this property AFTER assigning its delegate, if needed!
  */
-@property (nonatomic, weak) UIScrollView *scrollView;
+//@property (nonatomic, weak) UIScrollView *scrollView;
 
 /* The extension view to be shown beneath the navbar
  */
@@ -41,16 +48,18 @@
  */
 @property (nonatomic, readonly) CGRect extensionViewBounds;
 
-/* Control the resistance when scrolling up/down before the navbar 
+/* Control the resistance when scrolling up/down before the navbar
  * expands/contracts again.
  */
 @property (nonatomic) CGFloat expansionResistance;      // default 200
 @property (nonatomic) CGFloat contractionResistance;    // default 0
 
-/* Turn on or off the alpha fade as the navbar contracts/expands. 
+/* Turn on or off the alpha fade as the navbar contracts/expands.
  * Defaults to YES
  */
 @property (nonatomic, getter = isAlphaFadeEnabled) BOOL alphaFadeEnabled;
+
+@property (nonatomic, strong) id<ScrollViewProvider> scrollViewProvider;
 
 @end
 
@@ -58,10 +67,10 @@
 /*  CATEGORY DESCRIPTION:
  *  =====================
  *      The category described in the TLYShyNavBarManager usage, and it
- *  simply uses associated objects to attatch a TLYShyNavBar to the 
+ *  simply uses associated objects to attatch a TLYShyNavBar to the
  *  designated view controller.
  *
- *      We also perform some swizzling to pass notifications to the 
+ *      We also perform some swizzling to pass notifications to the
  *  TLYShyNavBar. Things like, viewDidLayoutSubviews, viewWillAppear and
  *   Disappear, ... etc.
  */
