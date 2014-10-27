@@ -137,16 +137,16 @@ const CGFloat contractionVelocity = 300.f;
     
     __block CGFloat deltaY;
     [UIView animateWithDuration:0.2 animations:^
-    {
-        if ((contract && self.child.isContracted) || (!contract && !self.isExpanded))
-        {
-            deltaY = [self contract];
-        }
-        else
-        {
-            deltaY = [self.child expand];
-        }
-    }];
+     {
+         if ((contract && self.child.isContracted) || (!contract && !self.isExpanded))
+         {
+             deltaY = [self contract];
+         }
+         else
+         {
+             deltaY = [self.child expand];
+         }
+     }];
     
     return deltaY;
 }
@@ -161,7 +161,7 @@ const CGFloat contractionVelocity = 300.f;
     }
     
     CGFloat amountToMove = self.expandedCenterValue.y - self.view.center.y;
-
+    
     self.view.center = self.expandedCenterValue;
     [self.child expand];
     
@@ -171,7 +171,7 @@ const CGFloat contractionVelocity = 300.f;
 - (CGFloat)contract
 {
     CGFloat amountToMove = self.contractedCenterValue.y - self.view.center.y;
-
+    
     self.view.center = self.contractedCenterValue;
     [self.child contract];
     
