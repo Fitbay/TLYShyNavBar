@@ -159,8 +159,6 @@ static inline CGFloat AACStatusBarHeight()
     //        _scrollView.delegate = self.delegateProxy.originalDelegate;
     //    }
     
-    [scrollViewProvider setScrollViewDelegate:self];
-    
     //    if (_scrollView.delegate != self.delegateProxy)
     //    {
     //        self.delegateProxy.originalDelegate = _scrollView.delegate;
