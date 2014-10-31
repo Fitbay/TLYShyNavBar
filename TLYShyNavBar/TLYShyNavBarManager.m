@@ -146,6 +146,7 @@ static inline CGFloat AACStatusBarHeight()
 
 - (void)setScrollViewProvider:(id<ScrollViewProvider>)scrollViewProvider
 {
+    _scrollViewProvider = scrollViewProvider;
     _scrollView = scrollViewProvider.scrollView;
     [scrollViewProvider setScrollViewDelegate:self];
     [self cleanup];
@@ -253,7 +254,8 @@ static inline CGFloat AACStatusBarHeight()
         if (self.accountForContentInset)
         {
             UIEdgeInsets currentInsets = self.scrollView.contentInset;
-            currentInsets.top = CGRectGetMaxY(self.navBarController.view.frame);
+            if (currentInsets.top < 100)
+                currentInsets.top = CGRectGetMaxY(self.navBarController.view.frame);
             self.scrollView.contentInset = currentInsets;
         }
     }
