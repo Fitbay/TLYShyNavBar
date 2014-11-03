@@ -374,7 +374,7 @@ static inline CGFloat AACStatusBarHeight()
 
 - (void)applicationDidBecomeActive
 {
-    [self.navBarController expand];
+//    [self.navBarController expand];
 }
 
 @end
