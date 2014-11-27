@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "TLYShyViewController.h"
 
 /*  CLASS DESCRIPTION:
  *  ==================
@@ -61,7 +62,10 @@
 
 @property (nonatomic, strong) id<ScrollViewProvider> scrollViewProvider;
 
+@property (nonatomic, assign) BOOL shouldExpandNavigationBarOnDisappear;
+
 @property (nonatomic, assign) BOOL accountForContentInset;
+
 @end
 
 

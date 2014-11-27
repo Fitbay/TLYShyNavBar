@@ -66,6 +66,7 @@ static inline CGFloat AACStatusBarHeight()
     {
         //        self.delegateProxy = [[TLYDelegateProxy alloc] initWithMiddleMan:self];
         
+        self.shouldExpandNavigationBarOnDisappear = YES;
         self.contracting = NO;
         self.previousContractionState = YES;
         
@@ -330,6 +331,9 @@ static inline CGFloat AACStatusBarHeight()
 
 - (void)cleanup
 {
+    if (!self.shouldExpandNavigationBarOnDisappear)
+        return;
+    
     [self.navBarController expand];
     
     self.previousYOffset = NAN;
@@ -374,7 +378,7 @@ static inline CGFloat AACStatusBarHeight()
 
 - (void)applicationDidBecomeActive
 {
-//    [self.navBarController expand];
+    //    [self.navBarController expand];
 }
 
 @end
