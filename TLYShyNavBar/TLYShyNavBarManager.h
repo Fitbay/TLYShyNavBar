@@ -21,14 +21,7 @@
  *
  */
 
-@protocol ScrollViewProvider <NSObject>
-
-@property (nonatomic, weak) id<UIScrollViewDelegate> scrollViewDelegate;
-@property (nonatomic, readonly) UIScrollView *scrollView;
-
-@end
-
-@interface TLYShyNavBarManager : NSObject
+@interface TLYShyNavBarManager : NSObject <UIScrollViewDelegate>
 
 /* The view controller that is part of the navigation stack
  * IMPORTANT: Must have access to navigationController
@@ -36,7 +29,6 @@
 @property (nonatomic, readonly, weak) UIViewController *viewController;
 
 /* The scrollView subclass that will drive the contraction/expansion
- * IMPORTANT: set this property AFTER assigning its delegate, if needed!
  */
 //@property (nonatomic, weak) UIScrollView *scrollView;
 
@@ -59,8 +51,6 @@
  * Defaults to YES
  */
 @property (nonatomic, getter = isAlphaFadeEnabled) BOOL alphaFadeEnabled;
-
-@property (nonatomic, strong) id<ScrollViewProvider> scrollViewProvider;
 
 @property (nonatomic, assign) BOOL shouldExpandNavigationBarOnDisappear;
 

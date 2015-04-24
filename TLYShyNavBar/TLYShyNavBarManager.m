@@ -33,7 +33,7 @@ static inline CGFloat AACStatusBarHeight()
 
 #pragma mark - TLYShyNavBarManager class
 
-@interface TLYShyNavBarManager () <UIScrollViewDelegate>
+@interface TLYShyNavBarManager ()
 
 @property (nonatomic, strong) TLYShyViewController *navBarController;
 @property (nonatomic, strong) TLYShyViewController *extensionController;
@@ -51,8 +51,6 @@ static inline CGFloat AACStatusBarHeight()
 
 @property (nonatomic, readonly) BOOL isViewControllerVisible;
 
-@property (nonatomic, weak) UIScrollView *scrollView;
-
 @end
 
 @implementation TLYShyNavBarManager
@@ -64,8 +62,6 @@ static inline CGFloat AACStatusBarHeight()
     self = [super init];
     if (self)
     {
-        //        self.delegateProxy = [[TLYDelegateProxy alloc] initWithMiddleMan:self];
-        
         self.shouldExpandNavigationBarOnDisappear = YES;
         self.contracting = NO;
         self.previousContractionState = YES;
@@ -145,27 +141,11 @@ static inline CGFloat AACStatusBarHeight()
     [self layoutViews];
 }
 
-- (void)setScrollViewProvider:(id<ScrollViewProvider>)scrollViewProvider
-{
-    _scrollViewProvider = scrollViewProvider;
-    _scrollView = scrollViewProvider.scrollView;
-    [scrollViewProvider setScrollViewDelegate:self];
-    [self cleanup];
-    [self layoutViews];
-}
-
 - (void)setScrollView:(UIScrollView *)scrollView
 {
-    //    if (_scrollView.delegate == self.delegateProxy)
-    //    {
-    //        _scrollView.delegate = self.delegateProxy.originalDelegate;
-    //    }
-    
-    //    if (_scrollView.delegate != self.delegateProxy)
-    //    {
-    //        self.delegateProxy.originalDelegate = _scrollView.delegate;
-    //        _scrollView.delegate = (id)self.delegateProxy;
-    //    }
+    [self willChangeValueForKey:@"scrollView"];
+    _scrollView = scrollView;
+    [self didChangeValueForKey:@"scrollView"];
     
     [self cleanup];
     [self layoutViews];
